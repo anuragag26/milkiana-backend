@@ -10,7 +10,16 @@ const authRoutes = require("./routes/authRoutes");
 const app = express();
 
 // ================= MIDDLEWARE =================
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://your-frontend.vercel.app",
+    ],
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 
 // ================= ROUTES =================
