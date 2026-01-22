@@ -6,10 +6,11 @@ const {
   markAsRead,
   deleteContact,
 } = require("../controllers/contactController");
+const adminAuth = require("../middlewares/adminAuth");
 
 router.post("/", createContact);
-router.get("/", getContacts);
-router.put("/:id/read", markAsRead);
-router.delete("/:id", deleteContact);
+router.get("/", adminAuth, getContacts);
+router.put("/:id/read", adminAuth, markAsRead);
+router.delete("/:id", adminAuth, deleteContact);
 
 module.exports = router;
