@@ -53,32 +53,43 @@ exports.getContacts = async (req, res) => {
   try {
     const contacts = await Contact.find().sort({ createdAt: -1 });
     res.json(contacts);
-  } catch (error) {
-    console.error("Fetch Contacts Error:", error);
-    res.status(500).json({ message: "Failed to fetch messages" });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to fetch contacts" });
   }
 };
 
 // MARK AS READ
 exports.markAsRead = async (req, res) => {
   try {
-    const contact = await Contact.findByIdAndUpdate(
-      req.params.id,
+    const { id } = req.params;
+
+    const updated = await Contact.findByIdAndUpdate(
+      id,
       { isRead: true },
       { new: true }
     );
-    res.json(contact);
-  } catch {
-    res.status(500).json({ message: "Failed to update status" });
+
+    if (!updated)
+      return res.status(404).json({ message: "Contact not found" });
+
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to mark as read" });
   }
 };
 
 // DELETE MESSAGE
 exports.deleteContact = async (req, res) => {
   try {
-    await Contact.findByIdAndDelete(req.params.id);
-    res.json({ message: "Contact deleted" });
-  } catch {
+    const { id } = req.params;
+
+    const deleted = await Contact.findByIdAndDelete(id);
+
+    if (!deleted)
+      return res.status(404).json({ message: "Contact not found" });
+
+    res.json({ success: true });
+  } catch (err) {
     res.status(500).json({ message: "Failed to delete contact" });
   }
 };

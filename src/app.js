@@ -14,9 +14,11 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",                 // local dev
-      "https://milkiana-frontend.vercel.app"   // production
+      "http://localhost:5174"
     ],
-    credentials: true
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
